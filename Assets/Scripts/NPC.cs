@@ -18,6 +18,7 @@ public class NPC : MonoBehaviour
     public string npcName;
     public bool isCulprit = false;
     public NPC witness;
+    public GameObject alibiLocation;
     
     private bool isTyping = false;
     private bool canSkip = false;
@@ -27,7 +28,7 @@ public class NPC : MonoBehaviour
     {
         dialogueText.text = "";
     }
-
+    
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E) && playerIsClose && !dialogueOpen)
@@ -37,13 +38,12 @@ public class NPC : MonoBehaviour
             canSkip = true;
             dialogueNPCName.text = npcName;
             StartCoroutine(Typing());
-
             if (gameManager != null)
-        {
-            gameManager.currentNPC = this;
+            {
+                gameManager.currentNPC = this;
+            }
         }
-        }
-
+        
         if (Input.GetMouseButtonDown(0) && canSkip && !IsPointerOverUIButton())
         {
             if (isTyping)
@@ -58,28 +58,24 @@ public class NPC : MonoBehaviour
             }
         }
     }
-
+    
     private bool IsPointerOverUIButton()
-{
-    PointerEventData pointerData = new PointerEventData(EventSystem.current)
     {
-        position = Input.mousePosition
-    };
-
-    List<RaycastResult> results = new List<RaycastResult>();
-    EventSystem.current.RaycastAll(pointerData, results);
-
-    foreach (RaycastResult result in results)
-    {
-        if (result.gameObject.GetComponent<Button>() != null)
+        PointerEventData pointerData = new PointerEventData(EventSystem.current)
         {
-            return true;
+            position = Input.mousePosition
+        };
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+        foreach (RaycastResult result in results)
+        {
+            if (result.gameObject.GetComponent<Button>() != null)
+            {
+                return true;
+            }
         }
+        return false;
     }
-
-    return false;
-}
-
     
     public void ZeroText()
     {
@@ -104,7 +100,7 @@ public class NPC : MonoBehaviour
         
         isTyping = false;
     }
-
+    
     public void NextLine()
     {
         if (index < dialogue.Length - 1)
