@@ -114,15 +114,7 @@ public class NPC : MonoBehaviour
             ZeroText();
         }
     }
-    
-    public void AccuseNPC()
-    {
-        if (gameManager != null)
-        {
-            gameManager.Accuse(this);
-        }
-    }
-    
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
