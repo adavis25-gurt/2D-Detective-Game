@@ -6,7 +6,6 @@ public class GameManager : MonoBehaviour
     public List<NPC> allNPCs;
     public List<GameObject> allLocations;
     public NPC currentNPC;
-    public MonoBehaviour npcScript;
     
     private NPC culprit;
     
