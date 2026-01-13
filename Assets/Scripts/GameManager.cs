@@ -8,7 +8,9 @@ public class GameManager : MonoBehaviour
     public NPC currentNPC;
     
     private NPC culprit;
-    
+
+    public Fade Fade;
+
     void Start()
     {
         PickCulprit();
@@ -129,11 +131,13 @@ public class GameManager : MonoBehaviour
         Debug.Log(accused);
         if (accused == culprit)
         {
-            Debug.Log("YOU WIN!");
+            Debug.Log("yea you right");
+            Fade.FadeUI(true);
         }
         else
         {
             Debug.Log("WRONG! GAME OVER!");
+            Fade.FadeUI(false);
         }
     }
 }
