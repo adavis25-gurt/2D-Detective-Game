@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Fade : MonoBehaviour
 {
@@ -35,16 +36,31 @@ public class Fade : MonoBehaviour
         {
             StartCoroutine(Typing(failText));
         }
-       
+
     }
 
     IEnumerator Typing(string Text)
     {
-        foreach(char letter in Text.ToCharArray())
+        foreach (char letter in Text.ToCharArray())
         {
             conditionText.text += letter;
-            print(wordSpeed);
             yield return new WaitForSeconds(wordSpeed);
         }
+
+        if (conditionText.text == Text)
+        {
+            yield return new WaitForSeconds(5);
+            while (conditionText.alpha < 1f)
+            {
+                print("sup[posed to be working");
+                conditionText.alpha += 0.5f * Time.deltaTime;
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
+
+        conditionText.alpha = 1f;
+
+        SceneManager.LoadScene("MainMenu");
     }
 }
+    
