@@ -707,6 +707,7 @@ GameObject:
   - component: {fileID: 679387869}
   - component: {fileID: 679387871}
   - component: {fileID: 679387872}
+  - component: {fileID: 679387873}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -814,6 +815,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &679387873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679387868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 226bf44a458bc144ea6a6327fa472da9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 1066143815}
+  hasGotLocation: 0
+  hasFoundPurse: 0
+  hasGotLocation2: 0
+  location1: 
+  purseLocation: 
+  location2: 
+  culprit: 
 --- !u!1 &693886903
 GameObject:
   m_ObjectHideFlags: 0
