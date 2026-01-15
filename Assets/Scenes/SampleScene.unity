@@ -462,7 +462,7 @@ GameObject:
   - component: {fileID: 548150547}
   - component: {fileID: 548150548}
   m_Layer: 6
-  m_Name: npc1 (1)
+  m_Name: Plink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -834,7 +834,7 @@ MonoBehaviour:
   location1: 
   purseLocation: 
   location2: 
-  culprit: 
+  culprit: {fileID: 0}
 --- !u!1 &693886903
 GameObject:
   m_ObjectHideFlags: 0
@@ -1262,6 +1262,7 @@ MonoBehaviour:
   - {fileID: 2115222179}
   currentNPC: {fileID: 0}
   Fade: {fileID: 2073347173}
+  stateManager: {fileID: 679387873}
 --- !u!4 &1066143816
 Transform:
   m_ObjectHideFlags: 0
@@ -1428,7 +1429,7 @@ GameObject:
   - component: {fileID: 1202882799}
   - component: {fileID: 1202882798}
   m_Layer: 6
-  m_Name: npc1 (4)
+  m_Name: Quip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1800,7 +1801,7 @@ GameObject:
   - component: {fileID: 1541650848}
   - component: {fileID: 1541650852}
   m_Layer: 6
-  m_Name: npc1
+  m_Name: Bob
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2072,7 +2073,7 @@ GameObject:
   - component: {fileID: 1721523955}
   - component: {fileID: 1721523956}
   m_Layer: 6
-  m_Name: npc1 (2)
+  m_Name: Trink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2268,7 +2269,7 @@ GameObject:
   - component: {fileID: 1904242702}
   - component: {fileID: 1904242701}
   m_Layer: 6
-  m_Name: npc1 (3)
+  m_Name: Nitro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

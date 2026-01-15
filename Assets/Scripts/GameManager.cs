@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -10,6 +11,7 @@ public class GameManager : MonoBehaviour
     private NPC culprit;
 
     public Fade Fade;
+    public StateManager stateManager;
 
     void Start()
     {
@@ -17,14 +19,12 @@ public class GameManager : MonoBehaviour
         GiveEveryoneElseAWitness();
         WriteDialogue();
     }
-    
-    void PickCulprit()
+     async void PickCulprit()
     {
-        int random = Random.Range(0, allNPCs.Count);
-        culprit = allNPCs[random];
-        culprit.isCulprit = true;
+        await Task.Delay(1000);
+        culprit = stateManager.culprit;
         
-        Debug.Log("Culprit: " + culprit.npcName);
+        Debug.Log("Culprit: " + culprit);
     }
     
     void GiveEveryoneElseAWitness()
