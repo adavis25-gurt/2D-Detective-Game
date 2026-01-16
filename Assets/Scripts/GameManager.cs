@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     }
      async void PickCulprit()
     {
-        await Task.Delay(1000);
+        await Task.Delay(2000);
         culprit = stateManager.culprit;
         
         Debug.Log("Culprit: " + culprit);
@@ -29,11 +29,15 @@ public class GameManager : MonoBehaviour
     
     void GiveEveryoneElseAWitness()
     {
+        if (!stateManager.hasGotLocation2) { return; }
+
+        string location = stateManager.location1;
+
         List<NPC> innocentNPCs = new List<NPC>();
         
         foreach (NPC npc in allNPCs)
         {
-            if (!npc.isCulprit)
+            if (npc != culprit && npc.transform.parent.name == location)
             {
                 innocentNPCs.Add(npc);
             }
@@ -79,48 +83,65 @@ public class GameManager : MonoBehaviour
     {
         foreach (NPC npc in allNPCs)
         {
-            if (npc.isCulprit)
+            if (!stateManager.hasGotLocation)
             {
-                if (npc.witness != null && npc.alibiLocation != null)
+                if (npc.isCulprit)
                 {
-                    string[] possibleCulpritLines = new string[]
+                    if (npc.witness != null && npc.alibiLocation != null)
                     {
+                        string[] possibleCulpritLines = new string[]
+                        {
                         "I was with " + npc.witness.npcName + " in " + npc.alibiLocation.name + " all day.",
                         npc.witness.npcName + " and I hung out in " + npc.alibiLocation.name + " yesterday.",
                         "I spent the whole time with " + npc.witness.npcName + " over in " + npc.alibiLocation.name + ".",
                         npc.witness.npcName + " can vouch for me, we were in " + npc.alibiLocation.name + " together."
-                    };
-                    int randomIndex = Random.Range(0, possibleCulpritLines.Length);
-                    npc.dialogue = new string[] { possibleCulpritLines[randomIndex] };
-                }
-                else
-                {
-                    string[] possibleCulpritLines = new string[]
+                        };
+                        int randomIndex = Random.Range(0, possibleCulpritLines.Length);
+                        npc.dialogue = new string[] { possibleCulpritLines[randomIndex] };
+                    }
+                    else
                     {
+                        string[] possibleCulpritLines = new string[]
+                        {
                         "I was at the market.",
                         "I was walking my dog.",
                         "I was reading a book at home.",
                         "I don't remember much about that night."
-                    };
-                    int randomIndex = Random.Range(0, possibleCulpritLines.Length);
-                    npc.dialogue = new string[] { possibleCulpritLines[randomIndex] };
+                        };
+                        int randomIndex = Random.Range(0, possibleCulpritLines.Length);
+                        npc.dialogue = new string[] { possibleCulpritLines[randomIndex] };
+                    }
                 }
-            }
-            else if (npc.witness != null)
-            {
-                string[] possibleWitnessLines = new string[]
+                else if (npc.witness != null)
                 {
+                    string[] possibleWitnessLines = new string[]
+                    {
                     "I was with " + npc.witness.npcName + " in " + npc.alibiLocation.name + " the whole time.",
                     npc.witness.npcName + " and I were hanging out in " + npc.alibiLocation.name + " all evening.",
                     "We stayed together in " + npc.alibiLocation.name + " the entire night, " + npc.witness.npcName + " can vouch for me.",
                     "I spent the night with " + npc.witness.npcName + " in " + npc.alibiLocation.name + ", nothing suspicious happened."
-                };
-                int randomIndex = Random.Range(0, possibleWitnessLines.Length);
-                npc.dialogue = new string[] { possibleWitnessLines[randomIndex] };
+                    };
+                    int randomIndex = Random.Range(0, possibleWitnessLines.Length);
+                    npc.dialogue = new string[] { possibleWitnessLines[randomIndex] };
+                }
+                else
+                {
+                    npc.dialogue = new string[] { "I don't know anything." };
+                }
             }
-            else
+            else if (stateManager.hasGotLocation2)
             {
-                npc.dialogue = new string[] { "I don't know anything." };
+                print("supposedly paired up?");
+
+                string[] possibleCulpritLines = new string[]
+                {
+                    "I was with " + npc.witness.npcName + " in " + npc.alibiLocation.name + " all day.",
+                    npc.witness.npcName + " and I hung out in " + npc.alibiLocation.name + " yesterday.",
+                    "I spent the whole time with " + npc.witness.npcName + " over in " + npc.alibiLocation.name + ".",
+                 npc.witness.npcName + " can vouch for me, we were in " + npc.alibiLocation.name + " together."
+                };
+                int randomIndex = Random.Range(0, possibleCulpritLines.Length);
+                npc.dialogue = new string[] { possibleCulpritLines[randomIndex] };
             }
         }
     }

@@ -828,9 +828,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1066143815}
-  hasGotLocation: 0
+  hasGotLocation: 1
   hasFoundPurse: 0
-  hasGotLocation2: 0
+  hasGotLocation2: 1
   location1: 
   purseLocation: 
   location2: 
