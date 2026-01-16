@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
+using UnityEditor.Analytics;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -13,23 +15,29 @@ public class GameManager : MonoBehaviour
     public Fade Fade;
     public StateManager stateManager;
 
-    void Start()
+
+    async void Start()
     {
-        PickCulprit();
+        await PickCulprit();
         GiveEveryoneElseAWitness();
-        WriteDialogue();
+        await WriteDialogue();
     }
-     async void PickCulprit()
+     async Task PickCulprit()
     {
-        await Task.Delay(2000);
+        while (stateManager.culprit == null)
+        {
+            await Task.Yield();
+        }
+
+
         culprit = stateManager.culprit;
+        culprit.isCulprit = true;
         
         Debug.Log("Culprit: " + culprit);
     }
     
     void GiveEveryoneElseAWitness()
     {
-        if (!stateManager.hasGotLocation2) { return; }
 
         string location = stateManager.location1;
 
@@ -37,7 +45,7 @@ public class GameManager : MonoBehaviour
         
         foreach (NPC npc in allNPCs)
         {
-            if (npc != culprit && npc.transform.parent.name == location)
+            if (npc != culprit)
             {
                 innocentNPCs.Add(npc);
             }
@@ -79,69 +87,62 @@ public class GameManager : MonoBehaviour
         }
     }
     
-    void WriteDialogue()
+    public async Task WriteDialogue()
     {
+        await Task.Delay(3000);
+
         foreach (NPC npc in allNPCs)
         {
-            if (!stateManager.hasGotLocation)
+            if (!stateManager.hasGotLocation && !stateManager.hasFoundPurse && !stateManager.hasGotLocation2) //Start of the game
             {
-                if (npc.isCulprit)
+                if (npc.transform.parent.name == stateManager.location1)
                 {
-                    if (npc.witness != null && npc.alibiLocation != null)
-                    {
-                        string[] possibleCulpritLines = new string[]
+                    string[] possibleLines = new string[]
                         {
-                        "I was with " + npc.witness.npcName + " in " + npc.alibiLocation.name + " all day.",
-                        npc.witness.npcName + " and I hung out in " + npc.alibiLocation.name + " yesterday.",
-                        "I spent the whole time with " + npc.witness.npcName + " over in " + npc.alibiLocation.name + ".",
-                        npc.witness.npcName + " can vouch for me, we were in " + npc.alibiLocation.name + " together."
+                            "Yea I heard some crime happened here.. apparently theres a purse in " + stateManager.purseLocation,
+                            "I'm scared to go out at night! A woman got robbed for her purse in this area!",
+                            "A little birdy told me you can find the purse in " + stateManager.purseLocation + " still.. not sure how true it is though.",
+                            "Please solve this! I feel so unsafe...",
                         };
-                        int randomIndex = Random.Range(0, possibleCulpritLines.Length);
-                        npc.dialogue = new string[] { possibleCulpritLines[randomIndex] };
-                    }
-                    else
-                    {
-                        string[] possibleCulpritLines = new string[]
-                        {
-                        "I was at the market.",
-                        "I was walking my dog.",
-                        "I was reading a book at home.",
-                        "I don't remember much about that night."
-                        };
-                        int randomIndex = Random.Range(0, possibleCulpritLines.Length);
-                        npc.dialogue = new string[] { possibleCulpritLines[randomIndex] };
-                    }
-                }
-                else if (npc.witness != null)
-                {
-                    string[] possibleWitnessLines = new string[]
-                    {
-                    "I was with " + npc.witness.npcName + " in " + npc.alibiLocation.name + " the whole time.",
-                    npc.witness.npcName + " and I were hanging out in " + npc.alibiLocation.name + " all evening.",
-                    "We stayed together in " + npc.alibiLocation.name + " the entire night, " + npc.witness.npcName + " can vouch for me.",
-                    "I spent the night with " + npc.witness.npcName + " in " + npc.alibiLocation.name + ", nothing suspicious happened."
-                    };
-                    int randomIndex = Random.Range(0, possibleWitnessLines.Length);
-                    npc.dialogue = new string[] { possibleWitnessLines[randomIndex] };
+                    int Index = Random.Range(0, possibleLines.Length);
+                    npc.dialogue = new string[] { possibleLines[Index] };
                 }
                 else
                 {
-                    npc.dialogue = new string[] { "I don't know anything." };
+                    string[] possibleLines = new string[]
+                        {
+                            "It's been all over the news, someone got robbed somewhere near " + stateManager.location1,
+                            stateManager.location1 + " has been getting more unsafe day by day!",
+                            "I'll never go to visit " + stateManager.location1 + " anymore.. not after what happened..",
+                        };
+                    int Index = Random.Range(0, possibleLines.Length);
+                    npc.dialogue = new string[] { possibleLines[Index] };
                 }
             }
-            else if (stateManager.hasGotLocation2)
+            else if (stateManager.hasGotLocation2 && stateManager.hasFoundPurse && npc.transform.parent.name == stateManager.location2) //End of the game
             {
-                print("supposedly paired up?");
-
-                string[] possibleCulpritLines = new string[]
+                if (npc.isCulprit)
                 {
-                    "I was with " + npc.witness.npcName + " in " + npc.alibiLocation.name + " all day.",
-                    npc.witness.npcName + " and I hung out in " + npc.alibiLocation.name + " yesterday.",
-                    "I spent the whole time with " + npc.witness.npcName + " over in " + npc.alibiLocation.name + ".",
-                 npc.witness.npcName + " can vouch for me, we were in " + npc.alibiLocation.name + " together."
-                };
-                int randomIndex = Random.Range(0, possibleCulpritLines.Length);
-                npc.dialogue = new string[] { possibleCulpritLines[randomIndex] };
+                    string[] possibleLines = new string[]
+                        {
+                            "Purse? What purse? I haven't seen any purse laying around!",
+                            "I ain't seen no purse! Why are you asking me?",
+                            "Nope! No purse here haha! Nothing here! haha.. ha..",
+                            "I haven't seen a purse..",
+                            "Purse? W-What? uhh I- I don't know.."
+                        };
+                    int Index = Random.Range(0, possibleLines.Length);
+                    npc.dialogue = new string[] { possibleLines[Index] };
+                }
+                else
+                {
+                    string[] possibleLines = new string[]
+                    {
+                        "Purse? No I'd never steal a purse!"
+                    };
+                    int randomIndex = Random.Range(0, possibleLines.Length);
+                    npc.dialogue = new string[] { possibleLines[randomIndex] };
+                }
             }
         }
     }
