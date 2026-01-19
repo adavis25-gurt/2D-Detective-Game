@@ -17,6 +17,7 @@ public class NPC : MonoBehaviour
     public bool playerIsClose;
     public string npcName;
     public bool isCulprit = false;
+    public StateManager stateManager;
     public NPC witness;
     public GameObject alibiLocation;
     
@@ -33,6 +34,7 @@ public class NPC : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && playerIsClose && !dialogueOpen)
         {
+            gameManager.WriteDialogue();
             dialoguePanel.SetActive(true);
             dialogueOpen = true;
             canSkip = true;
@@ -41,6 +43,11 @@ public class NPC : MonoBehaviour
             if (gameManager != null)
             {
                 gameManager.currentNPC = this;
+            }
+
+            if (gameManager.currentNPC.transform.parent.name == stateManager.location1)
+            {
+                stateManager.hasGotLocation = true;
             }
         }
         

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem.iOS;
 
 public class StateManager : MonoBehaviour
@@ -9,7 +10,7 @@ public class StateManager : MonoBehaviour
     public string location1, purseLocation, location2;
     public NPC culprit;
 
-
+    public UnityEvent onCulpritMade;
 
     void Start()
     {
@@ -43,6 +44,8 @@ public class StateManager : MonoBehaviour
         }
 
         culprit = possibleCulprit;
+
+        onCulpritMade.Invoke();
 
         print("LOCATION1: "+ location1 + " PURSELOCATION: " + purseLocation + " LOCATION2: " + location2 + " CULPRIT: " + culprit);
     }

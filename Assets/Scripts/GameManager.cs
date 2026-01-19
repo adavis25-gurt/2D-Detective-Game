@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEditor.Analytics;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,83 +15,20 @@ public class GameManager : MonoBehaviour
 
     public Fade Fade;
     public StateManager stateManager;
+    public UnityEvent onCulpritDecided;
 
-
-    async void Start()
+     public void PickCulprit()
     {
-        await PickCulprit();
-        GiveEveryoneElseAWitness();
-        await WriteDialogue();
-    }
-     async Task PickCulprit()
-    {
-        while (stateManager.culprit == null)
-        {
-            await Task.Yield();
-        }
-
-
         culprit = stateManager.culprit;
         culprit.isCulprit = true;
         
         Debug.Log("Culprit: " + culprit);
+
+        WriteDialogue();
     }
     
-    void GiveEveryoneElseAWitness()
+    public void WriteDialogue()
     {
-
-        string location = stateManager.location1;
-
-        List<NPC> innocentNPCs = new List<NPC>();
-        
-        foreach (NPC npc in allNPCs)
-        {
-            if (npc != culprit)
-            {
-                innocentNPCs.Add(npc);
-            }
-        }
-        
-        List<NPC> unpaired = new List<NPC>(innocentNPCs);
-        
-        while (unpaired.Count >= 2)
-        {
-            NPC person1 = unpaired[0];
-            unpaired.RemoveAt(0);
-            
-            int randomIndex = Random.Range(0, unpaired.Count);
-            NPC person2 = unpaired[randomIndex];
-            unpaired.RemoveAt(randomIndex);
-            
-            int locationIndex = Random.Range(0, allLocations.Count);
-            GameObject sharedLocation = allLocations[locationIndex];
-            
-            person1.witness = person2;
-            person1.alibiLocation = sharedLocation;
-            
-            person2.witness = person1;
-            person2.alibiLocation = sharedLocation;
-        }
-        
-        if (culprit != null)
-        {
-            List<NPC> availableNPCs = new List<NPC>(innocentNPCs);
-            
-            if (availableNPCs.Count > 0)
-            {
-                int fakeWitnessIndex = Random.Range(0, availableNPCs.Count);
-                culprit.witness = availableNPCs[fakeWitnessIndex];
-                
-                int fakeLocationIndex = Random.Range(0, allLocations.Count);
-                culprit.alibiLocation = allLocations[fakeLocationIndex];
-            }
-        }
-    }
-    
-    public async Task WriteDialogue()
-    {
-        await Task.Delay(3000);
-
         foreach (NPC npc in allNPCs)
         {
             if (!stateManager.hasGotLocation && !stateManager.hasFoundPurse && !stateManager.hasGotLocation2) //Start of the game
@@ -119,7 +57,7 @@ public class GameManager : MonoBehaviour
                     npc.dialogue = new string[] { possibleLines[Index] };
                 }
             }
-            else if (stateManager.hasGotLocation2 && stateManager.hasFoundPurse && npc.transform.parent.name == stateManager.location2) //End of the game
+            else if (stateManager.hasGotLocation && npc.transform.parent.name == stateManager.purseLocation)
             {
                 if (npc.isCulprit)
                 {
@@ -130,6 +68,30 @@ public class GameManager : MonoBehaviour
                             "Nope! No purse here haha! Nothing here! haha.. ha..",
                             "I haven't seen a purse..",
                             "Purse? W-What? uhh I- I don't know.."
+                        };
+                    int Index = Random.Range(0, possibleLines.Length);
+                    npc.dialogue = new string[] { possibleLines[Index] };
+                }
+                else
+                {
+                    string[] possibleLines = new string[]
+                        {
+                            "Yea I seen a purse around here somewhere",
+                            "I did think it was really odd that someone left their purse...",
+                            "I vaguely recall seeing something along those lines",
+                        };
+                    int Index = Random.Range(0, possibleLines.Length);
+                    npc.dialogue = new string[] { possibleLines[Index] };
+                }
+            }
+            else if (stateManager.hasGotLocation2 && stateManager.hasFoundPurse && npc.transform.parent.name == stateManager.location2) //End of the game
+            {
+                if (npc.isCulprit)
+                {
+                    string[] possibleLines = new string[]
+                        {
+                            "Never seen that purse in my life.",
+                            "Huh? Seen that purse before? No! Never!"
                         };
                     int Index = Random.Range(0, possibleLines.Length);
                     npc.dialogue = new string[] { possibleLines[Index] };
