@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System;
 
 public class NPC : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class NPC : MonoBehaviour
     public TextMeshProUGUI dialogueText;
     public TextMeshProUGUI dialogueNPCName;
     public GameManager gameManager;
+    public PlayerController playerController;
     public string[] dialogue;
     private int index;
     public float wordSpeed;
@@ -40,6 +42,7 @@ public class NPC : MonoBehaviour
             canSkip = true;
             dialogueNPCName.text = npcName;
             StartCoroutine(Typing());
+            playerController.canMove = false;
             if (gameManager != null)
             {
                 gameManager.currentNPC = this;
@@ -93,6 +96,7 @@ public class NPC : MonoBehaviour
         canSkip = false;
         isTyping = false;
         dialogueOpen = false;
+        playerController.canMove = true;
     }
     
     IEnumerator Typing()

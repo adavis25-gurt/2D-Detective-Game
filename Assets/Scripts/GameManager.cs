@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("Culprit: " + culprit);
 
         WriteDialogue();
-        purseSpawner.SpawnPurse();
     }
     
     public void WriteDialogue()
@@ -46,6 +45,7 @@ public class GameManager : MonoBehaviour
                         };
                     int Index = Random.Range(0, possibleLines.Length);
                     npc.dialogue = new string[] { possibleLines[Index] };
+                    purseSpawner.SpawnPurse();
                 }
                 else
                 {
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
                     npc.dialogue = new string[] { possibleLines[Index] };
                 }
             }
-            else if (stateManager.hasGotLocation && npc.transform.parent.name == stateManager.purseLocation)
+            else if (stateManager.hasGotLocation && !stateManager.hasFoundPurse) //if you got first location and you speak to anyone without the purse
             {
                 if (npc.isCulprit)
                 {
@@ -78,15 +78,25 @@ public class GameManager : MonoBehaviour
                 {
                     string[] possibleLines = new string[]
                         {
-                            "Yea I seen a purse around here somewhere",
-                            "I did think it was really odd that someone left their purse...",
-                            "I vaguely recall seeing something along those lines",
+                            "Yea I seen a purse on the floor somewhere",
+                            "I vaguely recall seeing something along the lines of a bag somewhere",
                         };
                     int Index = Random.Range(0, possibleLines.Length);
                     npc.dialogue = new string[] { possibleLines[Index] };
                 }
             }
-            else if (stateManager.hasGotLocation2 && stateManager.hasFoundPurse && npc.transform.parent.name == stateManager.location2) //End of the game
+            else if (!stateManager.hasGotLocation2 && stateManager.hasFoundPurse && npc.transform.parent.name != stateManager.location2) //if you speak to anyone except the final location with the purse
+            {
+                string[] possibleLines = new string[]
+                    {
+                        "Yea thats the purse I was on about!",
+                        "I saw that purse laying around here!",
+                        "It looks vaguely familiar"
+                    };
+                int randomIndex = Random.Range(0, possibleLines.Length);
+                npc.dialogue = new string[] { possibleLines[randomIndex] };
+            }
+            else if (!stateManager.hasGotLocation2 && stateManager.hasFoundPurse && npc.transform.parent.name == stateManager.location2) //If you speak to anyone in the final location with the purse
             {
                 if (npc.isCulprit)
                 {

@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public PurseSpawner spawner;
     [SerializeField] private Animator animator;
 
+    public bool canMove = true;
+
     private Vector2 movement;
     private Vector2 lastDirection;
 
@@ -21,6 +23,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (!canMove) { return; };
+
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, movePoint.position) <= 0.05f)
@@ -38,7 +42,10 @@ public class PlayerController : MonoBehaviour
 
                 if (Physics2D.OverlapCircle(targetPos, 0.05f, purse))
                 {
-                    print("supposed to work");
+                    movePoint.position = targetPos;
+                    movement = input;
+                    lastDirection = movement;
+                    animator.SetBool("isMoving", true);
                     spawner.playerIsClose = true;
                 }
                 else if (!Physics2D.OverlapCircle(targetPos, 0.05f, stopsMovement))
