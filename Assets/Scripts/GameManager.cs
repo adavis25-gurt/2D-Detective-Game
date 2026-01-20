@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     public Fade Fade;
     public StateManager stateManager;
+    public PurseSpawner purseSpawner;
     public UnityEvent onCulpritDecided;
 
      public void PickCulprit()
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Culprit: " + culprit);
 
         WriteDialogue();
+        purseSpawner.SpawnPurse();
     }
     
     public void WriteDialogue()

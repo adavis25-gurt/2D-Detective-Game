@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
     public Transform movePoint;
 
     public LayerMask stopsMovement;
+    public LayerMask purse;
+    public PurseSpawner spawner;
     [SerializeField] private Animator animator;
 
     private Vector2 movement;
@@ -34,17 +36,24 @@ public class PlayerController : MonoBehaviour
             {
                 Vector3 targetPos = movePoint.position + new Vector3(input.x, input.y, 0f);
 
-                if (!Physics2D.OverlapCircle(targetPos, 0.05f, stopsMovement))
+                if (Physics2D.OverlapCircle(targetPos, 0.05f, purse))
+                {
+                    print("supposed to work");
+                    spawner.playerIsClose = true;
+                }
+                else if (!Physics2D.OverlapCircle(targetPos, 0.05f, stopsMovement))
                 {
                     movePoint.position = targetPos;
                     movement = input;
                     lastDirection = movement;
                     animator.SetBool("isMoving", true);
+                    spawner.playerIsClose = false;
                 }
                 else
                 {
                     movement = Vector2.zero;
                     animator.SetBool("isMoving", false);
+                    spawner.playerIsClose = false;
                 }
             }
             else
