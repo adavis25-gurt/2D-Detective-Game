@@ -7,7 +7,9 @@ public class PlayerController : MonoBehaviour
 
     public LayerMask stopsMovement;
     public LayerMask purse;
+    public LayerMask sign;
     public PurseSpawner spawner;
+    public Sign signScript;
     [SerializeField] private Animator animator;
 
     public bool canMove = true;
@@ -42,14 +44,23 @@ public class PlayerController : MonoBehaviour
 
                 if (Physics2D.OverlapCircle(targetPos, 0.05f, purse))
                 {
+                    print("purse");
                     movePoint.position = targetPos;
                     movement = input;
                     lastDirection = movement;
                     animator.SetBool("isMoving", true);
                     spawner.playerIsClose = true;
                 }
+                else if (Physics2D.OverlapCircle(targetPos, 0.05f, sign))
+                {
+                    print("sign");
+                    movement = Vector2.zero;
+                    animator.SetBool("isMoving", false);
+                    signScript.playerIsClose = true;
+                }
                 else if (!Physics2D.OverlapCircle(targetPos, 0.05f, stopsMovement))
                 {
+                    print("moving normally");
                     movePoint.position = targetPos;
                     movement = input;
                     lastDirection = movement;

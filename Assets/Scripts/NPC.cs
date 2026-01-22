@@ -11,6 +11,7 @@ public class NPC : MonoBehaviour
     public GameObject dialoguePanel;
     public TextMeshProUGUI dialogueText;
     public TextMeshProUGUI dialogueNPCName;
+    public TextMeshProUGUI dialogueLocation;
     public GameManager gameManager;
     public PlayerController playerController;
     public string[] dialogue;
@@ -18,6 +19,7 @@ public class NPC : MonoBehaviour
     public float wordSpeed;
     public bool playerIsClose;
     public string npcName;
+    public string npcLocation;
     public bool isCulprit = false;
     public StateManager stateManager;
     public NPC witness;
@@ -41,6 +43,7 @@ public class NPC : MonoBehaviour
             dialogueOpen = true;
             canSkip = true;
             dialogueNPCName.text = npcName;
+            dialogueLocation.text = this.gameObject.transform.parent.name;
             StartCoroutine(Typing());
             playerController.canMove = false;
             if (gameManager != null)
