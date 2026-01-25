@@ -41,7 +41,7 @@ public class Sign : MonoBehaviour
             canSkip = true;
             dialogueNPCName.text = npcName;
             dialogueLocation.text = "";
-            stateManager.hasFoundPurse = true;
+            index = 0;
             StartCoroutine(Typing());
             playerController.canMove = false;
         }

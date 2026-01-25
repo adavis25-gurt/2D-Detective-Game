@@ -66,12 +66,14 @@ public class PlayerController : MonoBehaviour
                     lastDirection = movement;
                     animator.SetBool("isMoving", true);
                     spawner.playerIsClose = false;
+                    signScript.playerIsClose = false;
                 }
                 else
                 {
                     movement = Vector2.zero;
                     animator.SetBool("isMoving", false);
                     spawner.playerIsClose = false;
+                    signScript.playerIsClose = false;
                 }
             }
             else
