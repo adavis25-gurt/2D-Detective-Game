@@ -92,11 +92,6 @@ public class PurseSpawner : MonoBehaviour
                 Vector3Int spawnLocation = new Vector3Int(Mathf.RoundToInt(spawnLocationTmp.x), Mathf.RoundToInt(spawnLocationTmp.y), Mathf.RoundToInt(spawnLocationTmp.z));
 
                 tilemap.SetTile(spawnLocation, purse);
-                print("tile set");
-            }
-            else
-            {
-                print(location + " " + spawnPoint.transform.parent.parent.name);
             }
         }
     }
@@ -150,7 +145,6 @@ public class PurseSpawner : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerIsClose = true;
-            print(playerIsClose);
         }
     }
 
@@ -159,7 +153,6 @@ public class PurseSpawner : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerIsClose = false;
-            print(playerIsClose);
         }
     }
 }

@@ -12,10 +12,10 @@ public class Fade : MonoBehaviour
     public float wordSpeed = 0.06f;
 
     private string failText =
-        "yea bro lowkeniunely you failed and like ill chganege this script at some point in the future (probably) so like yea you fired bro";
+        "After searching for a long time, you have finally come to a conclusion. You turned them in... The verdict? Not guilty. You're fired.";
 
     private string winText =
-        "ok ur kinda cool i guess you figured oiut the right guy";
+        "After searching for a long time, you have finally come to a conclusion. You turned them in... The verdict? Guilty. You have since been promoted to lead detective.";
 
     public async void FadeUI(bool Win)
     {
@@ -23,7 +23,6 @@ public class Fade : MonoBehaviour
         {
             CanvasGroup.alpha += 0.5f * Time.deltaTime;
             await Awaitable.NextFrameAsync();
-            print("its working");
         }
 
         CanvasGroup.alpha = 1f;
@@ -52,7 +51,6 @@ public class Fade : MonoBehaviour
             yield return new WaitForSeconds(5);
             while (conditionText.alpha < 1f)
             {
-                print("sup[posed to be working");
                 conditionText.alpha += 0.5f * Time.deltaTime;
                 yield return new WaitForSeconds(0.1f);
             }

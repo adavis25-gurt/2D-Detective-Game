@@ -6,7 +6,6 @@ public class MainMenu : MonoBehaviour
     public void ExitButton()
     {
         Application.Quit();
-        print("game closed");
     }
 
     public void StartGame()

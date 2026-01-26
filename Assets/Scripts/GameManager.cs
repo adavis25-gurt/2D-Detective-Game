@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEditor.Analytics;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,12 +19,13 @@ public class GameManager : MonoBehaviour
     public PurseSpawner purseSpawner;
     public UnityEvent onCulpritDecided;
 
+    public Button accuse;
+
      public void PickCulprit()
     {
         culprit = stateManager.culprit;
         culprit.isCulprit = true;
         
-        Debug.Log("Culprit: " + culprit);
 
         WriteDialogue();
     }
@@ -124,15 +126,13 @@ public class GameManager : MonoBehaviour
     public void Accuse()
     {
         NPC accused = currentNPC;
-        Debug.Log(accused);
+        accuse.gameObject.SetActive(false);
         if (accused == culprit)
         {
-            Debug.Log("yea you right");
             Fade.FadeUI(true);
         }
         else
         {
-            Debug.Log("WRONG! GAME OVER!");
             Fade.FadeUI(false);
         }
     }

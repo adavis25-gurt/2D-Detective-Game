@@ -106,7 +106,6 @@ public class Sign : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerIsClose = true;
-            print(playerIsClose);
         }
     }
 
@@ -115,7 +114,6 @@ public class Sign : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerIsClose = false;
-            print(playerIsClose);
         }
     }
 }

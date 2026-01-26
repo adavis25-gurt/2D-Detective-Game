@@ -47,7 +47,6 @@ public class StateManager : MonoBehaviour
 
         onCulpritMade.Invoke();
 
-        print("LOCATION1: "+ location1 + " PURSELOCATION: " + purseLocation + " LOCATION2: " + location2 + " CULPRIT: " + culprit);
     }
 }
 

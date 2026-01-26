@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     public Sign signScript;
     [SerializeField] private Animator animator;
 
+    public AudioSource grassStep;
+
     public bool canMove = true;
 
     private Vector2 movement;
@@ -44,7 +46,6 @@ public class PlayerController : MonoBehaviour
 
                 if (Physics2D.OverlapCircle(targetPos, 0.05f, purse))
                 {
-                    print("purse");
                     movePoint.position = targetPos;
                     movement = input;
                     lastDirection = movement;
@@ -53,14 +54,12 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (Physics2D.OverlapCircle(targetPos, 0.05f, sign))
                 {
-                    print("sign");
                     movement = Vector2.zero;
                     animator.SetBool("isMoving", false);
                     signScript.playerIsClose = true;
                 }
                 else if (!Physics2D.OverlapCircle(targetPos, 0.05f, stopsMovement))
                 {
-                    print("moving normally");
                     movePoint.position = targetPos;
                     movement = input;
                     lastDirection = movement;
