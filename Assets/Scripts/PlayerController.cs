@@ -12,7 +12,8 @@ public class PlayerController : MonoBehaviour
     public Sign signScript;
     [SerializeField] private Animator animator;
 
-    public AudioSource grassStep;
+    public AudioSource AudioSource;
+    public AudioClip grassStep;
 
     public bool canMove = true;
 
@@ -48,6 +49,7 @@ public class PlayerController : MonoBehaviour
                 {
                     movePoint.position = targetPos;
                     movement = input;
+                    AudioSource.PlayOneShot(grassStep);
                     lastDirection = movement;
                     animator.SetBool("isMoving", true);
                     spawner.playerIsClose = true;
@@ -62,6 +64,7 @@ public class PlayerController : MonoBehaviour
                 {
                     movePoint.position = targetPos;
                     movement = input;
+                    AudioSource.PlayOneShot(grassStep);
                     lastDirection = movement;
                     animator.SetBool("isMoving", true);
                     spawner.playerIsClose = false;
