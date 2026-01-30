@@ -67,11 +67,8 @@ public class GameManager : MonoBehaviour
                 {
                     string[] possibleLines = new string[]
                         {
-                            "Purse? What purse? I haven't seen any purse laying around!",
-                            "I ain't seen no purse! Why are you asking me?",
-                            "Nope! No purse here haha! Nothing here! haha.. ha..",
-                            "I haven't seen a purse..",
-                            "Purse? W-What? uhh I- I don't know.."
+                            "I haven't seen no purse around here.",
+                            "Have I seen a purse? Maybe? I dunno."
                         };
                     int Index = Random.Range(0, possibleLines.Length);
                     npc.dialogue = new string[] { possibleLines[Index] };

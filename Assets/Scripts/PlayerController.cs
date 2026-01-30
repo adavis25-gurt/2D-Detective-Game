@@ -49,7 +49,6 @@ public class PlayerController : MonoBehaviour
                 {
                     movePoint.position = targetPos;
                     movement = input;
-                    AudioSource.PlayOneShot(grassStep);
                     lastDirection = movement;
                     animator.SetBool("isMoving", true);
                     spawner.playerIsClose = true;
